@@ -7,10 +7,10 @@ docker build -t my-emdocker .
 ## Run
 ```
 docker run \
-  --privileged=true
+  --privileged=true \
   --net=host \
-  -v PATH/TO/EMBOX/ROOT:/embox 
-  -it antonkozlov/emdocker
+  -v PATH/TO/EMBOX/ROOT:/embox \
+  -it embox/emdocker
 ```
 
 `--privileged=true` used to pass capabilities for tuntap and kvm.
