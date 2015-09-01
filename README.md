@@ -1,13 +1,16 @@
 # emdocker
 Docker build and test environment
-
+## Build
+```
+docker build -t my-emdocker .
+```
 ## Run
 ```
 docker run \
   --privileged=true
   --net=host \
   -v PATH/TO/EMBOX/ROOT:/embox 
-  -it emdocker
+  -it antonkozlov/emdocker
 ```
 
 `--privileged=true` used to pass capabilities for tuntap and kvm.
