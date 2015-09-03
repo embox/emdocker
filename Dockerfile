@@ -17,7 +17,13 @@ RUN add-apt-repository ppa:terry.guo/gcc-arm-embedded
 RUN apt-get update && apt-get -y install \
 	gcc-arm-none-eabi=4.9.3.2015q2-*
 
+EXPOSE 22
+RUN apt-get -y install openssh-server
+RUN mkdir /var/run/sshd
+COPY id_rsa.pub /root/.ssh/authorized_keys
+CMD ["/usr/sbin/sshd", "-D"]
+
 VOLUME /embox
-WORKDIR /embox
-CMD ["/bin/bash"]
+#WORKDIR /embox
+#CMD ["/bin/bash"]
 
