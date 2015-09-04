@@ -1,0 +1,18 @@
+#!/bin/bash
+
+D=$(date '+%H:%M:%N')
+
+pushd $(dirname $0)
+
+[ -p fifo ] || { rm fifo; mkfifo fifo ; }
+
+{ awk -f miwrapper.awk <&3 3<&- | tee log.$D.out >fifo & } 3<&0 
+echo "gdb $@" > log.$D.cmd
+
+# `script` tends to catch arguments to external command,
+# so we make a little shell with command and parameters here
+echo "gdb $@" > cmd
+chmod +x cmd
+script -qfc "./cmd" <fifo
+
+popd
