@@ -2,17 +2,25 @@
 
 D=$(date '+%H:%M:%N')
 
-pushd $(dirname $0)
+mktmpfifo() {
+	f=$(mktemp)
+	rm $f
+	mkfifo $f
+	echo $f
+}
 
-[ -p fifo ] || { rm fifo; mkfifo fifo ; }
+FIFO=$(mktmpfifo)
+CMD=$(mktemp)
+cleanup() {
+	rm -f $FIFO $CMD
+}
 
-{ awk -f miwrapper.awk <&3 3<&- | tee log.$D.out >fifo & } 3<&0 
-echo "gdb $@" > log.$D.cmd
+trap 'cleanup' INT QUIT TERM EXIT
+
+{ awk -f /usr/local/share/miwrapper.awk <&3 3<&- > $FIFO & } 3<&0
 
 # `script` tends to catch arguments to external command,
 # so we make a little shell with command and parameters here
-echo "gdb $@" > cmd
-chmod +x cmd
-script -qfc "./cmd" <fifo
-
-popd
+echo "gdb $@" > $CMD
+chmod +x $CMD
+script -qfc "$CMD" /dev/null < $FIFO
