@@ -8,4 +8,4 @@ gid=$(stat -c %g $target_dir)
 mkdir -p $home
 chown $uid $home
 
-useradd -u $uid -g $gid -d $home -s /bin/bash $user
+useradd -u $uid -g $gid -G sudo -d $home -s /bin/bash $user
