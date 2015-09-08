@@ -20,13 +20,18 @@ RUN apt-get update && apt-get -y install \
 EXPOSE 22
 RUN apt-get -y install openssh-server
 RUN mkdir /var/run/sshd
-COPY id_rsa.pub /root/.ssh/authorized_keys
 
 RUN apt-get -y install gdb
 
 COPY gdbwrapper /usr/local/bin/
 COPY miwrapper.awk /usr/local/share/
+COPY id_rsa.pub /home/user/.ssh/authorized_keys
+COPY create_matching_user.sh /usr/sbin/
+COPY user.bashrc /home/user/.bashrc
+COPY user.bash_profile /home/user/.bash_profile
 
-VOLUME /embox
-WORKDIR /embox
-CMD /etc/init.d/ssh start && /bin/bash
+VOLUME /home/user/embox
+CMD /usr/sbin/create_matching_user.sh user /home/user/embox && \
+	/etc/init.d/ssh start && \
+	/bin/bash
+
