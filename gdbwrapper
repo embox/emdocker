@@ -17,7 +17,7 @@ cleanup() {
 
 trap 'cleanup' INT QUIT TERM EXIT
 
-{ awk -f /usr/local/share/miwrapper.awk <&3 3<&- > $FIFO & } 3<&0
+{ awk -v EMBOX_DIR=${EMBOX_DIR} -f /usr/local/share/miwrapper.awk <&3 3<&- > $FIFO & } 3<&0
 
 # `script` tends to catch arguments to external command,
 # so we make a little shell with command and parameters here

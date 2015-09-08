@@ -1,7 +1,7 @@
 BEGIN {
 	cd = "[0-9]*-environment-cd"
 	srcbase = ""
-	dstbase = "/embox"
+	dstbase = EMBOX_DIR
 }
 
 {

@@ -31,8 +31,8 @@ COPY user.bashrc /home/user/.bashrc
 COPY user.bash_profile /home/user/.bash_profile
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-VOLUME /home/user/embox
-CMD /usr/sbin/create_matching_user.sh user /home/user/embox && \
+VOLUME /embox
+CMD /usr/sbin/create_matching_user.sh user /embox && \
 	/etc/init.d/ssh start && \
 	/bin/bash
 
