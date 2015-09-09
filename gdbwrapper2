@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $PROJECT_LOC ]; then
+	sudo mkdir -p $(dirname $PROJECT_LOC)
+	sudo ln -s $EMBOX_DIR $PROJECT_LOC
+fi
+
+exec gdb "$@"
