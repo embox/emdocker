@@ -8,4 +8,6 @@ if [ $PROJECT_LOC ]; then
 	fi
 fi
 
+echo $$ > ~/gdbwrapper.pid
+
 exec gdb "$@"

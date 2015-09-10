@@ -36,3 +36,4 @@ CMD /usr/sbin/create_matching_user.sh user /embox && \
 	/etc/init.d/ssh start && \
 	/bin/bash
 COPY gdbwrapper2 /usr/local/bin/
+COPY killgdbwrapper /usr/local/bin/
