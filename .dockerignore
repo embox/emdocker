@@ -3,8 +3,3 @@ README.md
 
 # generated with `ssh-keygen -f ./id_rsa`
 id_rsa
-
-# miwrapper tests
-miwrapper_test.sh
-test.in
-test.out

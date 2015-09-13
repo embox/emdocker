@@ -31,10 +31,8 @@ RUN apt-get update && \
 EXPOSE 22
 RUN mkdir /var/run/sshd
 
-COPY gdbwrapper /usr/local/bin/
-COPY miwrapper.awk /usr/local/share/
-COPY id_rsa.pub /home/user/.ssh/authorized_keys
 COPY create_matching_user.sh /usr/sbin/
+COPY id_rsa.pub /home/user/.ssh/authorized_keys
 COPY user.bashrc /home/user/.bashrc
 COPY user.bash_profile /home/user/.bash_profile
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
