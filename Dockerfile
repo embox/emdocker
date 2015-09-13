@@ -28,18 +28,16 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt /var/cache/apt
 
-EXPOSE 22
-RUN mkdir /var/run/sshd
+COPY gdbwrapper2 /usr/local/bin/
+COPY killgdbwrapper /usr/local/bin/
+COPY create_matching_user.sh /usr/local/sbin/
+COPY docker_start.sh /usr/local/sbin/
 
-COPY create_matching_user.sh /usr/sbin/
 COPY id_rsa.pub /home/user/.ssh/authorized_keys
 COPY user.bashrc /home/user/.bashrc
 COPY user.bash_profile /home/user/.bash_profile
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+EXPOSE 22
 VOLUME /embox
-CMD /usr/sbin/create_matching_user.sh user /embox && \
-	/etc/init.d/ssh start && \
-	/bin/bash
-COPY gdbwrapper2 /usr/local/bin/
-COPY killgdbwrapper /usr/local/bin/
+CMD ["/usr/local/sbin/docker_start.sh"]
