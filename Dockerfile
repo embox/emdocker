@@ -1,27 +1,35 @@
 
-FROM library/ubuntu:14.04
+FROM library/ubuntu-debootstrap:14.04
 MAINTAINER Anton Kozlov <drakon.mega@gmail.com>
 
-# base + x86
-RUN apt-get update && apt-get -y install \
-	software-properties-common \
-	gcc-multilib \
-	build-essential \
-	git \
-	curl \
-	python \
-	qemu
-
-# ARM
-RUN add-apt-repository ppa:terry.guo/gcc-arm-embedded
-RUN apt-get update && apt-get -y install \
-	gcc-arm-none-eabi=4.9.3.2015q2-*
+RUN apt-get update && \
+	apt-get -y --no-install-recommends install \
+		software-properties-common && \
+	add-apt-repository ppa:terry.guo/gcc-arm-embedded && \
+	apt-get update && \
+	DEBIAN_FRONTEND=noninteractive \
+		apt-get -y --no-install-recommends install \
+			gcc-arm-none-eabi=4.9.3.2015q2-* \
+		&& \
+	apt-get -y autoremove software-properties-common && \
+	DEBIAN_FRONTEND=noninteractive \
+		apt-get -y --no-install-recommends install \
+			sudo \
+			iptables \
+			openssh-server \
+			python \
+			curl \
+			make \
+			patch \
+			gcc-multilib \
+			gdb \
+			qemu-system \
+		&& \
+	apt-get clean && \
+	rm -rf /var/lib/apt /var/cache/apt
 
 EXPOSE 22
-RUN apt-get -y install openssh-server
 RUN mkdir /var/run/sshd
-
-RUN apt-get -y install gdb
 
 COPY gdbwrapper /usr/local/bin/
 COPY miwrapper.awk /usr/local/share/
