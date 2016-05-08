@@ -28,8 +28,6 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt /var/cache/apt
 
-COPY gdbwrapper2 /usr/local/bin/
-COPY killgdbwrapper /usr/local/bin/
 COPY create_matching_user.sh /usr/local/sbin/
 COPY docker_start.sh /usr/local/sbin/
 

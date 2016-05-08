@@ -1,7 +1,0 @@
-#!/bin/sh
-
-SIG=$1
-PIDFILE=$HOME/gdbwrapper.pid
-[ -f $PIDFILE ] && PID=$(cat $PIDFILE)
-
-[ $PID ] && kill -s $SIG $PID
