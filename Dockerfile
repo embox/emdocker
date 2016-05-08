@@ -2,31 +2,30 @@
 FROM library/ubuntu-debootstrap:14.04
 MAINTAINER Anton Kozlov <drakon.mega@gmail.com>
 
-RUN apt-get update && \
+RUN apt-get update
+RUN apt-get -y --no-install-recommends install \
+	software-properties-common
+RUN add-apt-repository ppa:terry.guo/gcc-arm-embedded
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
-		software-properties-common && \
-	add-apt-repository ppa:terry.guo/gcc-arm-embedded && \
-	apt-get update && \
-	DEBIAN_FRONTEND=noninteractive \
-		apt-get -y --no-install-recommends install \
-			gcc-arm-none-eabi=4.9.3.2015q2-* \
-		&& \
-	apt-get -y autoremove software-properties-common && \
-	DEBIAN_FRONTEND=noninteractive \
-		apt-get -y --no-install-recommends install \
-			sudo \
-			iptables \
-			openssh-server \
-			python \
-			curl \
-			make \
-			patch \
-			gcc-multilib \
-			gdb \
-			qemu-system \
-		&& \
-	apt-get clean && \
-	rm -rf /var/lib/apt /var/cache/apt
+		gcc-arm-none-eabi=4.9.3.2015q3-*
+RUN apt-get -y autoremove software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		sudo \
+		iptables \
+		openssh-server \
+		python \
+		curl \
+		make \
+		patch \
+		gcc-multilib \
+		gdb \
+		qemu-system
+
+RUN apt-get clean
+RUN rm -rf /var/lib/apt /var/cache/apt
 
 COPY create_matching_user.sh /usr/local/sbin/
 COPY docker_start.sh /usr/local/sbin/
