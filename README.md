@@ -1,28 +1,36 @@
 # emdocker
 Docker build and test environment
-## Run
-To run this image, you should install `docker` and run next command. No additional actions required, this repo may not be cloned.
-```
-docker run \
-  --privileged \
-  -v PATH/TO/EMBOX/ROOT:/embox \
-  -P \
-  -d embox/emdocker
-```
 
-`--privileged` used to pass capabilities for tuntap, kvm and mount-bind capabillity.
-
-`PATH/TO/EMBOX/ROOT` is path to your embox copy. You're supposed to edit files and make commits/pushes there.
+## Use
+Please refer to embox wiki: https://github.com/embox/embox/wiki/Emdocker
 
 ## Build
-Build step is not required for regular usage, it's dedicated to image developers. If you want to develop/extend this image, you can clone this repo and build your own image with next command
+Build step is not required for regular usage, it's dedicated to image developers. If you want to develop/extend this image, you can clone this repo, adjust `Dockerfile` and build your own image with next command
 ```
 docker build -t my-emdocker .
 ```
-Then you should adjust `Dockerfile` with required actions.
+
+### Publish
+The command above will create image suitable to use, but not so good to be published because it's size. During time of development it became really uncomfortable to watch on layers size, manually squashing them. So external tool for squashing used:  https://github.com/goldmann/docker-squash
+
+For regular use, consider using `squash.sh`. It will squash all layers from source image starting from head and ending at first `MAINTAINER` layer, so base images will be safe. Old image will be untouched, squashed image will get own tag. Synopsis is
+```
+$ ./squash.sh [NEW-SQUASHED-IMG-TAG [SOURCE-IMG-TO-SQUASH]]
+```
+
+Defaults are OK to construct real image, published on https://hub.docker.com/r/embox/emdocker: default source image is `my-emdocker` and squashed image tag is `embox/emdocker:latest`.
+
+If you've built `my-emdocker` and willing to republish `embox/emdocker`, then just type
+
+```
+$ ./squash.sh
+$ docker push embox/emdocker:latest
+```
+
+Note that unsquashed image is still published as `embox/emdocker:latest-dev` via Docker Hub automated build capabillity.
 
 ## Details
-Image have some hacks to make build and debug embox pleasure.
-1. embox root directory passed as `/embox` mount. It build embox right there, so ownership of new files should match owner of embox. That's why new user `user` created on container start, his uid/pid assigned from `embox` mountpoint.
-2. gdbwrapper provided to recreate host path to embox project in container. That's will make gdb print file path to as host expects, without transformation. Gdb tries to follow symbolic links and report real names, that's why mount-bind used. Also, it stores gdb pid to known place, so host will be able to send signals to it via `killgdbwrapper`.
-3. user makes `cd` to embox project directory. So, `ssh` or `docker exec` commands have less to type.
+Image have some tricks to make build and debug embox pleasure.
+
+1. embox root directory passed as `/embox` mount, allowing to edit files via prefered way on host computer. However, new files created by build process should like as it were created on host. Container's user created on container start, taking uid/gid from `embox` mountpoint. So new files created by build process have same uid/gid, as host user.
+2. user's bashrc makes `cd` to embox project directory. So, `ssh` or `docker exec` commands have less to type.
