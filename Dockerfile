@@ -2,30 +2,49 @@
 FROM library/ubuntu-debootstrap:14.04
 MAINTAINER Anton Kozlov <drakon.mega@gmail.com>
 
+# Container utils
 RUN apt-get update
-RUN apt-get -y --no-install-recommends install \
-	software-properties-common
-RUN add-apt-repository ppa:terry.guo/gcc-arm-embedded
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive \
-	apt-get -y --no-install-recommends install \
-		gcc-arm-none-eabi=4.9.3.2015q3-*
-RUN apt-get -y autoremove software-properties-common
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		sudo \
 		iptables \
-		openssh-server \
+		openssh-server
+
+# embox deps
+## base embox deps
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
 		python \
+		bzip2 \
 		curl \
 		make \
-		patch \
+		patch
+
+## x86 toolchain and all qemu's
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
 		gcc-multilib \
 		gdb \
 		qemu-system
 
+## arm crosscompiler
+RUN apt-get -y --no-install-recommends install \
+	software-properties-common
+RUN add-apt-repository ppa:team-gcc-arm-embedded/ppa
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		"gcc-arm-embedded=6-2017q2-*"
+RUN apt-get -y autoremove software-properties-common
+
 RUN apt-get clean
 RUN rm -rf /var/lib/apt /var/cache/apt
+
+## other crosscompilers
+RUN for a in microblaze mips powerpc sparc; do \
+	curl -L "https://github.com/embox/crosstool/releases/download/2.28-6.3.0-7.12/$a-elf-toolchain.tar.bz2" | \
+		tar -jxC /opt; \
+	done
 
 COPY create_matching_user.sh /usr/local/sbin/
 COPY docker_start.sh /usr/local/sbin/
