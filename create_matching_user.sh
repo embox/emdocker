@@ -6,7 +6,7 @@ uid=$(stat -c %u $target_dir)
 gid=$(stat -c %g $target_dir)
 
 mkdir -p $home
-chown $uid:$gid $home
+chown -R $uid:$gid $home
 
 if ! getent group $gid; then
 	groupadd -g $gid embox_user
