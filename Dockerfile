@@ -50,12 +50,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		ruby \
 		bison
 
-## x86/test/fs
-RUN DEBIAN_FRONTEND=noninteractive \
-	apt-get -y --no-install-recommends install \
-		autoconf \
-		pkg-config
-
 ## x86/test/packetdrill
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
@@ -65,6 +59,13 @@ RUN DEBIAN_FRONTEND=noninteractive \
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		bc
+
+## x86/test/fs
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		autoconf \
+		pkg-config \
+		mtd-utils
 
 RUN apt-get clean
 RUN rm -rf /var/lib/apt /var/cache/apt
