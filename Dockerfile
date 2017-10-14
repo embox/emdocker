@@ -61,11 +61,15 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		bc
 
 ## x86/test/fs
+RUN for i in $(seq 0 9); do \
+		mknod /dev/loop$i -m0660 b 7 $i; \
+	done
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		autoconf \
 		pkg-config \
-		mtd-utils
+		mtd-utils \
+		ntfs-3g
 
 RUN apt-get clean
 RUN rm -rf /var/lib/apt /var/cache/apt
