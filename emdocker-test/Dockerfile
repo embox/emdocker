@@ -4,20 +4,42 @@ MAINTAINER Anton Kozlov <drakon.mega@gmail.com>
 
 RUN apt-get update
 
+# x86/test/fs nfs
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		nfs-kernel-server \
 		nfs-common
 
 RUN mkdir -p -m 777 /var/nfs_test
-COPY exports /etc/exports
+COPY exports /etc/
 
+# x86/test/fs cifs
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		samba
 
 RUN mkdir -p -m 777 /var/cifs_test
-COPY smb.conf /etc/samba/smb.conf
+COPY smb.conf /etc/samba/
+
+# x86/test/net
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		net-tools \
+		isc-dhcp-server
+
+COPY dhcpd.conf /etc/dhcp/
+COPY isc-dhcp-server /etc/default
+
+
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		psmisc
+
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		wget \
+		expect \
+		snmp
 
 CMD mount -t tmpfs none /var/nfs_test && \
 	service rpcbind restart && \
