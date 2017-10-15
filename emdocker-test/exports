@@ -1,3 +1,0 @@
-
-/var/nfs_test/ *(rw,fsid=1,subtree_check,anonuid=99,anongid=99,insecure)
-
