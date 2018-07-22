@@ -31,18 +31,14 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		qemu-system
 
 ## arm crosscompiler
-RUN apt-get -y --no-install-recommends install \
-	software-properties-common
-RUN add-apt-repository ppa:team-gcc-arm-embedded/ppa
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive \
-	apt-get -y --no-install-recommends install \
-		"gcc-arm-embedded=6-2017q2-*"
-RUN apt-get -y autoremove software-properties-common
+## NOTE use insecure connection (-k) to avoid troubles with outdated local certificates
+## another option is to update certificates (i.e. from https://curl.haxx.se/docs/caextract.html) and provide the file with --cacert
+RUN curl -k -L "https://developer.arm.com/-/media/Files/downloads/gnu-rm/6-2017q2/gcc-arm-none-eabi-6-2017-q2-update-linux.tar.bz2" | \
+	tar -jxC /opt
 
 ## other crosscompilers
 RUN for a in microblaze mips powerpc sparc; do \
-	curl -L "https://github.com/embox/crosstool/releases/download/2.28-6.3.0-7.12/$a-elf-toolchain.tar.bz2" | \
+	curl -k -L "https://github.com/embox/crosstool/releases/download/2.28-6.3.0-7.12/$a-elf-toolchain.tar.bz2" | \
 		tar -jxC /opt; \
 	done
 
