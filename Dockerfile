@@ -16,6 +16,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		bzip2 \
 		unzip \
+		xz-utils \
 		python \
 		curl \
 		make \
