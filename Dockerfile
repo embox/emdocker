@@ -25,6 +25,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		gcc-multilib \
+		g++-multilib \
 		gdb \
 		qemu-system
 
