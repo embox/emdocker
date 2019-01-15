@@ -1,5 +1,5 @@
 
-FROM library/ubuntu-debootstrap:14.04
+FROM ubuntu:16.04
 MAINTAINER Anton Kozlov <drakon.mega@gmail.com>
 
 # Container utils
@@ -8,7 +8,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		sudo \
 		iptables \
-		openssh-server
+		openssh-server \
+		iproute2
 
 # embox deps
 ## base embox deps
@@ -20,7 +21,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		python \
 		curl \
 		make \
-		patch
+		patch \
+		cpio
 
 ## x86 toolchain and all qemu's
 RUN DEBIAN_FRONTEND=noninteractive \
