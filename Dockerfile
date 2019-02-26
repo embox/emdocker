@@ -71,6 +71,12 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		mtd-utils \
 		ntfs-3g
 
+## For LIBDRM
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get -y --no-install-recommends install \
+		autotools-dev \
+		automake
+
 RUN apt-get clean
 RUN rm -rf /var/lib/apt /var/cache/apt
 
