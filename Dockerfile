@@ -75,7 +75,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get -y --no-install-recommends install \
 		autotools-dev \
-		automake
+		automake \
+		xutils-dev \
+		libtool
 
 RUN apt-get clean
 RUN rm -rf /var/lib/apt /var/cache/apt
