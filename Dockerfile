@@ -38,6 +38,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
 RUN curl -k -L "https://developer.arm.com/-/media/Files/downloads/gnu-rm/6-2017q2/gcc-arm-none-eabi-6-2017-q2-update-linux.tar.bz2" | \
 	tar -jxC /opt
 
+## aarch64 crosscompiler
+RUN curl -k -L "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-elf.tar.xz" | \
+	tar -xJC /opt
+
 ## other crosscompilers
 RUN for a in microblaze mips powerpc sparc; do \
 	curl -k -L "https://github.com/embox/crosstool/releases/download/2.28-6.3.0-7.12/$a-elf-toolchain.tar.bz2" | \
