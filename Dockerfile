@@ -86,6 +86,14 @@ RUN DEBIAN_FRONTEND=noninteractive \
 RUN apt-get clean
 RUN rm -rf /var/lib/apt /var/cache/apt
 
+ENV PATH=$PATH:\
+/opt/gcc-arm-none-eabi-6-2017-q2-update/bin:\
+/opt/gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin:\
+/opt/microblaze-elf-toolchain/bin:\
+/opt/mips-elf-toolchain/bin:\
+/opt/powerpc-elf-toolchain/bin:\
+/opt/sparc-elf-toolchain/bin
+
 COPY create_matching_user.sh /usr/local/sbin/
 COPY docker_start.sh /usr/local/sbin/
 
