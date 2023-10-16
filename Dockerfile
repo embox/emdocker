@@ -46,6 +46,10 @@ RUN curl -k -L "https://developer.arm.com/-/media/Files/downloads/gnu-rm/6-2017q
 RUN curl -k -L "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-elf.tar.xz" | \
 	tar -xJC /opt
 
+## risc-v crosscompiler
+RUN curl -k -L -s "https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.2.0-2019.05.3-x86_64-linux-ubuntu14.tar.gz" | \
+	tar -xzC /opt
+
 ## other crosscompilers
 RUN for a in microblaze mips powerpc sparc; do \
 	curl -k -L "https://github.com/embox/crosstool/releases/download/2.28-6.3.0-7.12/$a-elf-toolchain.tar.bz2" | \
@@ -55,6 +59,7 @@ RUN for a in microblaze mips powerpc sparc; do \
 ENV PATH=$PATH:\
 /opt/gcc-arm-none-eabi-6-2017-q2-update/bin:\
 /opt/gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin:\
+/opt/riscv64-unknown-elf-gcc-8.2.0-2019.05.3-x86_64-linux-ubuntu14/bin:\
 /opt/microblaze-elf-toolchain/bin:\
 /opt/mips-elf-toolchain/bin:\
 /opt/powerpc-elf-toolchain/bin:\
