@@ -52,7 +52,7 @@ RUN curl -k -L -s "https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-g
 
 ## other crosscompilers
 RUN for a in microblaze mips powerpc sparc; do \
-	curl -k -L "https://github.com/embox/crosstool/releases/download/2.28-6.3.0-7.12/$a-elf-toolchain.tar.bz2" | \
+	curl -k -L "https://github.com/embox/crosstool/releases/download/2.42-13.2.0-14.2/$a-elf-toolchain.tar.bz2" | \
 		tar -jxC /opt; \
 	done
 
